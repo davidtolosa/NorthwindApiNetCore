@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.8" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Northwind.Api.Repository\Northwind.Api.Repository.csproj" />
+    <ProjectReference Include="..\Northwind.Api.Models\Northwind.Api.Models.csproj" />
+    <ProjectReference Include="..\Northwind.Api.Repository.SqlServer\Northwind.Api.Repository.SqlServer.csproj" />
+  </ItemGroup>
+</Project>
