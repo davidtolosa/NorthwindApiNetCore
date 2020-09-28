@@ -6,7 +6,7 @@ namespace Northwind.Api.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [Produces("application/json")]
-    public class ApiController : ControllerBase
+    public abstract class ApiController : ControllerBase
     {
     }
 }
