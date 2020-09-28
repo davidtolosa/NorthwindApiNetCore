@@ -35,6 +35,38 @@ namespace Northwind.Api.Controllers
             return Ok(result);
         }
 
-        
+        [HttpPost]
+        public ActionResult<Customer> Post([FromBody] Customer customer){
+
+            if( customer == null) return BadRequest();
+
+            _repository.Create(customer);
+
+            return CreatedAtAction("GetCustomer", new {id = customer.Id}, customer);
+        }
+
+        [HttpPut]
+        public ActionResult<Customer> Put([FromBody] Customer customer){
+            if (customer == null) return BadRequest();
+
+            if(!_repository.Exist(customer.Id)) return NoContent();
+
+            _repository.Update(customer);
+
+            return Ok(customer);
+        }
+
+        [HttpDelete("{id:int}")]
+        public ActionResult<Customer> Delete([FromRoute] int id){
+            if (id <= 0) return BadRequest();
+
+            var customer = _repository.Read(id);
+
+            if(customer == null) return NoContent();
+
+            _repository.Delete(customer);
+
+            return Ok();
+        }
     }
 }

@@ -1,6 +1,7 @@
 using System;
-using System.Collections.Generic;
 using Northwind.Api.Models;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Northwind.Api.Repository.SqlServer
 {
@@ -8,6 +9,11 @@ namespace Northwind.Api.Repository.SqlServer
     {
         public CustomerRepository(NorthwindDbContext context) : base(context)
         {
+        }
+
+        public bool Exist(int id)
+        {
+           return _context.Customer.AsNoTracking().FirstOrDefault(c => c.Id == id) != null;
         }
     }
 }

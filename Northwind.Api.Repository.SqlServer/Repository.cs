@@ -6,7 +6,7 @@ namespace Northwind.Api.Repository.SqlServer
     public class Repository<T> : IRepository<T> where T : class
     {
 
-        private readonly NorthwindDbContext _context;
+        protected readonly NorthwindDbContext _context;
 
         public Repository(NorthwindDbContext context){
             _context = context;
