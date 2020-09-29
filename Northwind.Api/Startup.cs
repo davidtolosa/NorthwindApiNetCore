@@ -1,18 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Northwind.Api.Repository.SqlServer;
 using Microsoft.EntityFrameworkCore;
 using Northwind.Api.Repository;
+using AutoMapper;
 
 namespace Northwind.Api
 {
@@ -35,7 +30,10 @@ namespace Northwind.Api
             services.AddTransient<ICustomerRepository, CustomerRepository>();
             services.AddSwaggerGen(configuration => {
                 configuration.EnableAnnotations();
+                configuration.CustomSchemaIds(type => type.ToString());
             });
+
+            services.AddAutoMapper(typeof(Startup));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

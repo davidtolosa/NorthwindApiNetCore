@@ -6,27 +6,30 @@ using Northwind.Api.Models;
 using System.Linq;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
+using AutoMapper;
 
 namespace Northwind.Api.Controllers
 {
     public class CustomerController : ApiController
     {
         private readonly ICustomerRepository _repository;
+        private readonly IMapper _mapper;
 
-        public CustomerController(ICustomerRepository repository){
+        public CustomerController(ICustomerRepository repository, IMapper mapper){
             _repository = repository;
+            _mapper = mapper;
         }
 
         [HttpGet]
         [SwaggerOperation("Get Customers","List of customers from database")]
-        [SwaggerResponse((int) HttpStatusCode.OK,"List of customers",typeof(IEnumerable<Customer>))]
+        [SwaggerResponse((int) HttpStatusCode.OK,"List of customers",typeof(IEnumerable<Models.Dto.Customer>))]
         [SwaggerResponse((int) HttpStatusCode.NoContent, "No customers")]
-        public ActionResult<IEnumerable<Customer>> GetAllCustomers(){
+        public ActionResult<IEnumerable<Models.Dto.Customer>> GetAllCustomers(){
             var result = _repository.ReadAll();
             
             if(!result.Any()) return NoContent();
             
-            return Ok(_repository.ReadAll());
+            return Ok(_mapper.Map<Models.Dto.Customer>(_repository.ReadAll()));
         }
 
         [HttpGet("{id:int}", Name = "GetCustomer")]
