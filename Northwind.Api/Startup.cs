@@ -33,6 +33,9 @@ namespace Northwind.Api
                 options.UseSqlServer("Server=DESKTOP-1INVORS;Database=Northwind;Trusted_Connection=True;MultipleActiveResultSets=true"));
 
             services.AddTransient<ICustomerRepository, CustomerRepository>();
+            services.AddSwaggerGen(configuration => {
+                configuration.EnableAnnotations();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,6 +45,11 @@ namespace Northwind.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger().UseSwaggerUI(config => {
+                config.SwaggerEndpoint("/swagger/v1/swagger.json","NorthwindApi V1.0");
+                config.RoutePrefix = string.Empty;
+            });
 
             app.UseHttpsRedirection();
 

@@ -36,7 +36,7 @@ namespace Northwind.Api.Integration.Tests.Builders
 
         public CustomerBuilder With10Customers(){
             AddCustomersToDbContext(CreateCustomer(10));
-            return this;
+           h
         }
 
         private void AddCustomersToDbContext(IEnumerable<Customer> customers)

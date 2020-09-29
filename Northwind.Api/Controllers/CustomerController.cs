@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Northwind.Api.Repository;
 using Northwind.Api.Models;
 using System.Linq;
+using Swashbuckle.AspNetCore.Annotations;
+using System.Net;
 
 namespace Northwind.Api.Controllers
 {
@@ -16,6 +18,9 @@ namespace Northwind.Api.Controllers
         }
 
         [HttpGet]
+        [SwaggerOperation("Get Customers","List of customers from database")]
+        [SwaggerResponse((int) HttpStatusCode.OK,"List of customers",typeof(IEnumerable<Customer>))]
+        [SwaggerResponse((int) HttpStatusCode.NoContent, "No customers")]
         public ActionResult<IEnumerable<Customer>> GetAllCustomers(){
             var result = _repository.ReadAll();
             

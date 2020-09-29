@@ -3,12 +3,16 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.8"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.8"/>
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="5.6.3"/>
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="5.6.3"/>
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="5.6.3"/>
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="5.6.3"/>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Northwind.Api.Repository\Northwind.Api.Repository.csproj" />
-    <ProjectReference Include="..\Northwind.Api.Models\Northwind.Api.Models.csproj" />
-    <ProjectReference Include="..\Northwind.Api.Repository.SqlServer\Northwind.Api.Repository.SqlServer.csproj" />
+    <ProjectReference Include="..\Northwind.Api.Repository\Northwind.Api.Repository.csproj"/>
+    <ProjectReference Include="..\Northwind.Api.Models\Northwind.Api.Models.csproj"/>
+    <ProjectReference Include="..\Northwind.Api.Repository.SqlServer\Northwind.Api.Repository.SqlServer.csproj"/>
   </ItemGroup>
 </Project>
