@@ -1,4 +1,3 @@
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -8,6 +7,10 @@ using Northwind.Api.Repository.SqlServer;
 using Microsoft.EntityFrameworkCore;
 using Northwind.Api.Repository;
 using AutoMapper;
+using Northwind.Api.Swagger;
+using Hellang.Middleware.ProblemDetails;
+using Microsoft.AspNetCore.Http;
+using System;
 
 namespace Northwind.Api
 {
@@ -25,26 +28,30 @@ namespace Northwind.Api
         {
             services.AddControllers();
             services.AddDbContext<NorthwindDbContext>(options =>
-                options.UseSqlServer("Server=DESKTOP-1INVORS;Database=Northwind;Trusted_Connection=True;MultipleActiveResultSets=true"));
+                options.UseSqlServer(Configuration.GetConnectionString("Sql")));
 
             services.AddTransient<ICustomerRepository, CustomerRepository>();
             services.AddSwaggerGen(configuration => {
                 configuration.EnableAnnotations();
                 configuration.CustomSchemaIds(type => type.ToString());
+                //configuration.DocumentFilter<RemoveDefinitionDocumentFilter>();
             });
 
             services.AddAutoMapper(typeof(Startup));
+            services.AddProblemDetails(opt => {
+                opt.IncludeExceptionDetails = (ctx, ex) => false;
+                opt.ShouldLogUnhandledException = (ctx, ex, details) => true;
+                opt.MapToStatusCode<Exception>(StatusCodes.Status500InternalServerError);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
-            app.UseSwagger().UseSwaggerUI(config => {
+            app.UseProblemDetails();
+            
+            app.UseSwagger()
+               .UseSwaggerUI(config => {
                 config.SwaggerEndpoint("/swagger/v1/swagger.json","NorthwindApi V1.0");
                 config.RoutePrefix = string.Empty;
             });

@@ -29,43 +29,58 @@ namespace Northwind.Api.Controllers
             
             if(!result.Any()) return NoContent();
             
-            return Ok(_mapper.Map<Models.Dto.Customer>(_repository.ReadAll()));
+            return Ok(_mapper.Map<IEnumerable<Models.Dto.Customer>>(result));
         }
 
+
         [HttpGet("{id:int}", Name = "GetCustomer")]
-        public ActionResult<Customer> GetCustomer([FromRoute] int id){
+        [SwaggerOperation("Get Customer","Specific customer from database")]
+        [SwaggerResponse((int) HttpStatusCode.OK, "Customer by id", typeof(Models.Dto.Customer))]
+        [SwaggerResponse((int) HttpStatusCode.NoContent, "No Customer")]
+        public ActionResult<Models.Dto.Customer> GetCustomer([FromRoute] int id){
             if( id <= 0) return BadRequest();
 
             var result = _repository.Read(id);
            
             if(result == null) return NotFound();
             
-            return Ok(result);
+            return Ok(_mapper.Map<Models.Dto.Customer>(result));
         }
 
         [HttpPost]
-        public ActionResult<Customer> Post([FromBody] Customer customer){
+        [SwaggerOperation("Create Customer", "Create a new Customer")]
+        [SwaggerResponse((int) HttpStatusCode.Created, "Created a new customer", typeof(Models.Dto.Customer))]
+        [SwaggerResponse((int) HttpStatusCode.BadRequest, "There is some errors in the request")]
+        public ActionResult<Models.Dto.Customer> Post([FromBody] Models.Dto.Customer customer){
 
             if( customer == null) return BadRequest();
 
-            _repository.Create(customer);
+            _repository.Create(_mapper.Map<Customer>(customer));
 
             return CreatedAtAction("GetCustomer", new {id = customer.Id}, customer);
         }
 
         [HttpPut]
-        public ActionResult<Customer> Put([FromBody] Customer customer){
+        [SwaggerOperation("Update Customer", "Create a a new Customer")]
+        [SwaggerResponse((int)HttpStatusCode.BadRequest, "There is some errors in the request")]
+        [SwaggerResponse((int)HttpStatusCode.NoContent, "Customer not found")]        
+        [SwaggerResponse((int)HttpStatusCode.OK, "Customer updated properly", typeof(Models.Dto.Customer))]
+        public ActionResult<Models.Dto.Customer> Put([FromBody] Models.Dto.Customer customer){
             if (customer == null) return BadRequest();
 
             if(!_repository.Exist(customer.Id)) return NoContent();
 
-            _repository.Update(customer);
+            _repository.Update(_mapper.Map<Customer>(customer));
 
             return Ok(customer);
         }
 
         [HttpDelete("{id:int}")]
-        public ActionResult<Customer> Delete([FromRoute] int id){
+        [SwaggerOperation("Delete Customer", "Delete an existent Customer")]
+        [SwaggerResponse((int)HttpStatusCode.BadRequest, "There is some errors in the request")]
+        [SwaggerResponse((int)HttpStatusCode.NoContent, "Customer not found")]        
+        [SwaggerResponse((int)HttpStatusCode.OK, "Customer deleted properly")]
+        public ActionResult<Models.Dto.Customer> Delete([FromRoute] int id){
             if (id <= 0) return BadRequest();
 
             var customer = _repository.Read(id);
